@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mario6.wheel.config.modular.system.dao.AppMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.mario6.wheel.config.modular.system.model.App">
+        <id column="id" property="id"/>
+        <result column="app_name" property="appName"/>
+        <result column="app_desc" property="appDesc"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_user" property="createUser"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, app_name, app_desc, create_time, create_user
+    </sql>
+
+</mapper>

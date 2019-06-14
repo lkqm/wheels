@@ -1,0 +1,3 @@
+rootProject.name = 'wl-config'
+
+include 'wl-config-admin'

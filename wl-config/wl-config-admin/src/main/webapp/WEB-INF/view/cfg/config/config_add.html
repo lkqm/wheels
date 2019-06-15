@@ -2,23 +2,13 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <div class="form-horizontal">
-
+            <input id="appId" name="appId" type="hidden" value="${appId}"/>
+            <input id="envId" name="envId" type="hidden" value="${envId}"/>
             <div class="row">
-                <div class="col-sm-6 b-r">
-                    <#input id="id" name="" underline="true"/>
-                    <#input id="appId" name="应用id" underline="true"/>
-                    <#input id="envId" name="环境id" underline="true"/>
-                    <#input id="configKey" name="配置key" underline="true"/>
-                    <#input id="configValue" name="配置value" underline="true"/>
+                <div class="col-sm-12">
+                    <#input id="configKey" name="Key" underline="true"/>
+                    <#input id="configValue" name="Value" underline="true"/>
                     <#input id="configDesc" name="描述"/>
-                </div>
-
-                <div class="col-sm-6">
-                    <#input id="status" name="状态, -1:删除, 0:已发布, 1:新增, 2:修改" underline="true"/>
-                    <#input id="createTime" name="创建时间" underline="true"/>
-                    <#input id="createUser" name="创建人" underline="true"/>
-                    <#input id="updateTime" name="更新时间" underline="true"/>
-                    <#input id="updateUser" name="更新人" underline="true"/>
                 </div>
             </div>
 

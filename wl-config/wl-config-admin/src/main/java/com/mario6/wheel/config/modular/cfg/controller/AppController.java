@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 /**
  * 应用管理控制器
  *
@@ -104,5 +106,14 @@ public class AppController extends BaseController {
     @ResponseBody
     public Object detail(@PathVariable("appId") Integer appId) {
         return appService.selectById(appId);
+    }
+
+
+    @RequestMapping("/getByUser")
+    @ResponseBody
+    public Object getUserAppList() {
+        ShiroUser user = ShiroKit.getUser();
+        List<App> apps = appService.getAppsByUser(user.getId());
+        return apps;
     }
 }

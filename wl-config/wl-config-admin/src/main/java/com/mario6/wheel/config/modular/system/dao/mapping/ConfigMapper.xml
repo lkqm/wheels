@@ -22,4 +22,10 @@
         id, app_id, env_id, config_key, config_value, config_desc, status, create_time, create_user, update_time, update_user
     </sql>
 
+    <update id="updateStatusByIds">
+        update cc_config
+        set status = #{status}
+        where id in ( <foreach item="id" collection="ids" separator=",">${id}</foreach> )
+    </update>
+
 </mapper>

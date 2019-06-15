@@ -14,17 +14,21 @@ var Config = {
 Config.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: '', field: 'id', visible: true, align: 'center', valign: 'middle'},
-        {title: '应用id', field: 'appId', visible: true, align: 'center', valign: 'middle'},
-        {title: '环境id', field: 'envId', visible: true, align: 'center', valign: 'middle'},
-        {title: '配置key', field: 'configKey', visible: true, align: 'center', valign: 'middle'},
-        {title: '配置value', field: 'configValue', visible: true, align: 'center', valign: 'middle'},
+        // {title: 'ID', field: 'id', visible: true, align: 'center', valign: 'middle'},
+        {title: 'Key', field: 'configKey', visible: true, align: 'center', valign: 'left'},
+        {title: 'Value', field: 'configValue', visible: true, align: 'center', valign: 'middle'},
         {title: '描述', field: 'configDesc', visible: true, align: 'center', valign: 'middle'},
-        {title: '状态, -1:删除, 0:已发布, 1:新增, 2:修改', field: 'status', visible: true, align: 'center', valign: 'middle'},
-        {title: '创建时间', field: 'createTime', visible: true, align: 'center', valign: 'middle'},
-        {title: '创建人', field: 'createUser', visible: true, align: 'center', valign: 'middle'},
-        {title: '更新时间', field: 'updateTime', visible: true, align: 'center', valign: 'middle'},
-        {title: '更新人', field: 'updateUser', visible: true, align: 'center', valign: 'middle'}
+        {
+            title: '状态', field: 'status', visible: true, align: 'center', valign: 'middle', formatter(val, row) {
+                var obj = {
+                    '-1': '<span style="color: orange">删除</span>',
+                    '0': '<span style="color: gray">已发布</span>',
+                    '1': '<span style="color: green">新增</span>',
+                    '2': '<span style="color: red">修改</span>',
+                };
+                return obj['' + val];
+            }
+        }
     ];
 };
 
@@ -46,13 +50,14 @@ Config.check = function () {
  * 点击添加配置项
  */
 Config.openAddConfig = function () {
+    var appId = $('#appId').val(), envId = $('#envId').val();
     var index = layer.open({
         type: 2,
         title: '添加配置项',
         area: ['800px', '420px'], //宽高
         fix: false, //不固定
-        maxmin: true,
-        content: Feng.ctxPath + '/config/config_add'
+        maxmin: false,
+        content: Feng.ctxPath + '/config/config_add?appId=' + appId + '&envId=' + envId
     });
     this.layerIndex = index;
 };
@@ -67,7 +72,7 @@ Config.openConfigDetail = function () {
             title: '配置项详情',
             area: ['800px', '420px'], //宽高
             fix: false, //不固定
-            maxmin: true,
+            maxmin: false,
             content: Feng.ctxPath + '/config/config_update/' + Config.seItem.id
         });
         this.layerIndex = index;
@@ -94,14 +99,95 @@ Config.delete = function () {
  * 查询配置项列表
  */
 Config.search = function () {
-    var queryData = {};
-    queryData['condition'] = $("#condition").val();
-    Config.table.refresh({query: queryData});
+    Config.table.refresh({query: Config.queryParams()});
+};
+
+Config.appList = function () {
+    var ajax = new $ax(Feng.ctxPath + "/app/getByUser", function (data) {
+        var html = '';
+        for (var i in data) {
+            var app = data[i];
+            html += '<option value="' + app.id + '">' + app.appName + '</option>'
+        }
+        $('#appId').html(html);
+    }, function (data) {
+        Feng.error("应用列表加载错误!" + data.responseJSON.message + "!");
+    });
+    ajax.start();
+};
+
+Config.envList = function () {
+    var ajax = new $ax(Feng.ctxPath + "/env/list", function (envs) {
+        var html = '';
+        for (var i in envs) {
+            var env = envs[i];
+            html += '<option value="' + env.id + '">' + env.envName + '</option>'
+        }
+        $('#envId').html(html);
+    }, function (data) {
+        Feng.error("应用列表加载错误!" + data.responseJSON.message + "!");
+    });
+    ajax.start();
+};
+
+Config.queryParams = function () {
+    var data = {};
+    data['appId'] = $("#appId").val();
+    data['envId'] = $("#envId").val();
+    data['key'] = $("#key").val();
+    return data;
+};
+
+Config.publish = function () {
+    var appId = $('#appId').val(), envId = $('#envId').val();
+    if (appId && envId) {
+        var ajax = new $ax(Feng.ctxPath + "/config/publish", function (data) {
+            Feng.success("发布成功");
+            Config.table.refresh();
+        }, function (data) {
+            Feng.error("发布失败!" + data.responseJSON.message + "!");
+        });
+        ajax.set('appId', appId);
+        ajax.set('envId', envId);
+        ajax.start();
+    }
+};
+
+/**
+ * 重置配置
+ */
+Config.reset = function () {
+    var appId = $('#appId').val(), envId = $('#envId').val();
+    if (appId && envId) {
+        var ajax = new $ax(Feng.ctxPath + "/config/reset", function (data) {
+            Feng.success("重置成功");
+            Config.table.refresh();
+        }, function (data) {
+            Feng.error("重置失败!" + data.responseJSON.message + "!");
+        });
+        ajax.set('appId', appId);
+        ajax.set('envId', envId);
+        ajax.start();
+    }
 };
 
 $(function () {
+    Config.appList();
+    Config.envList();
+
     var defaultColunms = Config.initColumn();
     var table = new BSTable(Config.id, "/config/list", defaultColunms);
     table.setPaginationType("client");
     Config.table = table.init();
+
+    $('#appId').change(function () {
+        Config.table.refresh({query: Config.queryParams()});
+    });
+    $('#envId').change(function () {
+        Config.table.refresh({query: Config.queryParams()});
+    });
+    if ($('#appId').val() == null || $('#envId').val() == null) {
+        $(":input").attr({"disabled": "disabled"});
+    }
+
 });

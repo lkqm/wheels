@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 应用相关服务实现
@@ -38,5 +39,10 @@ public class AppServiceImpl extends ServiceImpl<AppMapper, App> implements IAppS
     @Override
     public App getAppByName(String name) {
         return appMapper.selectByName(name);
+    }
+
+    @Override
+    public List<App> getAppsByUser(Integer userId) {
+        return appMapper.selectByUser(userId);
     }
 }

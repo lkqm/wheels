@@ -160,8 +160,10 @@ public class ConfigServiceImpl extends ServiceImpl<ConfigMapper, Config> impleme
     @Override
     @Transactional
     public void reset(Integer appId, Integer envId) {
-        Integer version = versionMapper.selectMaxByAppIdAndEnvId(appId, envId);
-        List<ConfigVersion> configVersions = configVersionMapper.selectListByAppAndEnvAndVersion(appId, envId, version);
+        Version version = versionMapper.selectLastedVersionByAppIdAndEnvId(appId, envId);
+        if (version == null) return;
+
+        List<ConfigVersion> configVersions = configVersionMapper.selectListByAppAndEnvAndVersion(appId, envId, version.getId());
 
         List<Config> configs = new ArrayList<>(configVersions.size());
         for (ConfigVersion configVersion : configVersions) {

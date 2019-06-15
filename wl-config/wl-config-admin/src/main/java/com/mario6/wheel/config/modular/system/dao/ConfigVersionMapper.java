@@ -13,5 +13,5 @@ import java.util.List;
 public interface ConfigVersionMapper extends BaseMapper<ConfigVersion> {
 
     @Select("select * from cc_config_version where app_id = #{appId} and env_id = #{envId} and version=#{version}")
-    List<ConfigVersion> selectListByAppAndEnvAndVersion(@Param("appId") Integer appId, @Param("envId") Integer envId, @Param("version") Integer version);
+    List<ConfigVersion> selectListByAppAndEnvAndVersion(@Param("appId") Integer appId, @Param("envId") Integer envId, @Param("version") Long version);
 }

@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Select;
 
 public interface VersionMapper extends BaseMapper<Version> {
 
-    @Select("select max(id) from cc_version where app_id=#{appId} and env_id = #{envId} ")
-    Integer selectMaxByAppIdAndEnvId(@Param("appId") Integer appId, @Param("envId") Integer envId);
+    @Select("select * from cc_version where app_id=#{appId} and env_id = #{envId} order by id desc limit 1")
+    Version selectLastedVersionByAppIdAndEnvId(@Param("appId") Integer appId, @Param("envId") Integer envId);
+
 }

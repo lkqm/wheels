@@ -14,7 +14,6 @@ var Env = {
 Env.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: '', field: 'id', visible: true, align: 'center', valign: 'middle'},
         {title: '环境名称', field: 'envName', visible: true, align: 'center', valign: 'middle'},
         {title: '环境描述', field: 'envDesc', visible: true, align: 'center', valign: 'middle'},
         {title: '创建时间', field: 'createTime', visible: true, align: 'center', valign: 'middle'},
@@ -45,7 +44,7 @@ Env.openAddEnv = function () {
         title: '添加环境',
         area: ['800px', '420px'], //宽高
         fix: false, //不固定
-        maxmin: true,
+        maxmin: false,
         content: Feng.ctxPath + '/env/env_add'
     });
     this.layerIndex = index;
@@ -61,7 +60,7 @@ Env.openEnvDetail = function () {
             title: '环境详情',
             area: ['800px', '420px'], //宽高
             fix: false, //不固定
-            maxmin: true,
+            maxmin: false,
             content: Feng.ctxPath + '/env/env_update/' + Env.seItem.id
         });
         this.layerIndex = index;

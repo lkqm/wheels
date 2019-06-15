@@ -2,17 +2,12 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <div class="form-horizontal">
+            <input id="id" name="id" value="${item.id}" type="hidden"/>
 
             <div class="row">
-                <div class="col-sm-6 b-r">
-                    <#input id="id" name="" value="${item.id}" underline="true"/>
-                    <#input id="envName" name="环境名称" value="${item.envName}" underline="true"/>
+                <div class="col-sm-12">
+                    <#input id="envName" name="环境名称" value="${item.envName}" disabled="disabled" underline="true"/>
                     <#input id="envDesc" name="环境描述" value="${item.envDesc}" />
-                </div>
-
-                <div class="col-sm-6">
-                    <#input id="createTime" name="创建时间" value="${item.createTime}" underline="true"/>
-                    <#input id="createUser" name="创建人" value="${item.createUser}" />
                 </div>
             </div>
 

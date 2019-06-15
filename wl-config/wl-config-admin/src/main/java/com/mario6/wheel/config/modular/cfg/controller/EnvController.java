@@ -2,6 +2,8 @@ package com.mario6.wheel.config.modular.cfg.controller;
 
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import com.mario6.wheel.config.core.log.LogObjectHolder;
+import com.mario6.wheel.config.core.shiro.ShiroKit;
+import com.mario6.wheel.config.core.shiro.ShiroUser;
 import com.mario6.wheel.config.modular.cfg.service.IEnvService;
 import com.mario6.wheel.config.modular.system.model.Env;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 环境控制器
- *
- * @author fengshuonan
- * @Date 2019-06-15 03:16:03
  */
 @Controller
 @RequestMapping("/env")
@@ -69,7 +68,22 @@ public class EnvController extends BaseController {
     @RequestMapping(value = "/add")
     @ResponseBody
     public Object add(Env env) {
-        envService.insert(env);
+        ShiroUser user = ShiroKit.getUser();
+        env.setCreateUser(user.getName());
+        envService.addEnv(env);
+        return SUCCESS_TIP;
+    }
+
+    /**
+     * 修改环境
+     */
+    @RequestMapping(value = "/update")
+    @ResponseBody
+    public Object update(Env env) {
+        Env envToUpdate = new Env();
+        envToUpdate.setId(env.getId());
+        envToUpdate.setEnvDesc(env.getEnvDesc());
+        envService.updateById(envToUpdate);
         return SUCCESS_TIP;
     }
 
@@ -80,16 +94,6 @@ public class EnvController extends BaseController {
     @ResponseBody
     public Object delete(@RequestParam Integer envId) {
         envService.deleteById(envId);
-        return SUCCESS_TIP;
-    }
-
-    /**
-     * 修改环境
-     */
-    @RequestMapping(value = "/update")
-    @ResponseBody
-    public Object update(Env env) {
-        envService.updateById(env);
         return SUCCESS_TIP;
     }
 

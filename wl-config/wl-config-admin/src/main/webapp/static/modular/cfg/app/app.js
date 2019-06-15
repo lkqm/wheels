@@ -14,7 +14,7 @@ var App = {
 App.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
-        {title: '', field: 'id', visible: true, align: 'center', valign: 'middle'},
+        {title: 'ID', field: 'id', visible: true, align: 'center', valign: 'middle'},
         {title: '应用名称', field: 'appName', visible: true, align: 'center', valign: 'middle'},
         {title: '应用描述', field: 'appDesc', visible: true, align: 'center', valign: 'middle'},
         {title: '创建时间', field: 'createTime', visible: true, align: 'center', valign: 'middle'},
@@ -42,10 +42,10 @@ App.check = function () {
 App.openAddApp = function () {
     var index = layer.open({
         type: 2,
-        title: '添加应用管理',
+        title: '添加应用',
         area: ['800px', '420px'], //宽高
         fix: false, //不固定
-        maxmin: true,
+        maxmin: false,
         content: Feng.ctxPath + '/app/app_add'
     });
     this.layerIndex = index;
@@ -58,10 +58,10 @@ App.openAppDetail = function () {
     if (this.check()) {
         var index = layer.open({
             type: 2,
-            title: '应用管理详情',
-            area: ['800px', '420px'], //宽高
-            fix: false, //不固定
-            maxmin: true,
+            title: '应用详情',
+            area: ['800px', '420px'],
+            fix: false,
+            maxmin: false,
             content: Feng.ctxPath + '/app/app_update/' + App.seItem.id
         });
         this.layerIndex = index;

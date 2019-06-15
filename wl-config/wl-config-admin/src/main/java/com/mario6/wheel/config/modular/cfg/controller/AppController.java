@@ -2,6 +2,8 @@ package com.mario6.wheel.config.modular.cfg.controller;
 
 import cn.stylefeng.roses.core.base.controller.BaseController;
 import com.mario6.wheel.config.core.log.LogObjectHolder;
+import com.mario6.wheel.config.core.shiro.ShiroKit;
+import com.mario6.wheel.config.core.shiro.ShiroUser;
 import com.mario6.wheel.config.modular.cfg.service.IAppService;
 import com.mario6.wheel.config.modular.system.model.App;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,17 +71,9 @@ public class AppController extends BaseController {
     @RequestMapping(value = "/add")
     @ResponseBody
     public Object add(App app) {
-        appService.insert(app);
-        return SUCCESS_TIP;
-    }
-
-    /**
-     * 删除应用管理
-     */
-    @RequestMapping(value = "/delete")
-    @ResponseBody
-    public Object delete(@RequestParam Integer appId) {
-        appService.deleteById(appId);
+        ShiroUser user = ShiroKit.getUser();
+        app.setCreateUser(user.getName());
+        appService.addApp(app);
         return SUCCESS_TIP;
     }
 
@@ -90,6 +84,16 @@ public class AppController extends BaseController {
     @ResponseBody
     public Object update(App app) {
         appService.updateById(app);
+        return SUCCESS_TIP;
+    }
+
+    /**
+     * 删除应用管理
+     */
+    @RequestMapping(value = "/delete")
+    @ResponseBody
+    public Object delete(@RequestParam Integer appId) {
+        appService.deleteById(appId);
         return SUCCESS_TIP;
     }
 

@@ -10,6 +10,7 @@ target/
 # gradle ignore
 .gradle/
 out/
+build/
 
 
 # eclipse ignore

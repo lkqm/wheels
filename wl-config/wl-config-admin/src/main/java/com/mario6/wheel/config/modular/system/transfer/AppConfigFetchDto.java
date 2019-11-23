@@ -2,6 +2,7 @@ package com.mario6.wheel.config.modular.system.transfer;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Properties;
 
 public class AppConfigFetchDto implements Serializable {
 
@@ -9,7 +10,9 @@ public class AppConfigFetchDto implements Serializable {
     private String envName;
     private Long version;
 
+    Properties properties;
     List<ConfigItem> configItems;
+
 
     public String getAppName() {
         return appName;
@@ -41,5 +44,13 @@ public class AppConfigFetchDto implements Serializable {
 
     public void setConfigItems(List<ConfigItem> configItems) {
         this.configItems = configItems;
+    }
+
+    public Properties getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Properties properties) {
+        this.properties = properties;
     }
 }

@@ -15,8 +15,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // util
     implementation 'org.apache.commons:commons-lang3:3.9'
     implementation 'com.google.guava:guava:28.0-jre'
